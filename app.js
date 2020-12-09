@@ -10,7 +10,6 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const { doesNotMatch } = require("assert");
 
 let team = [];
 
@@ -34,7 +33,7 @@ function addTeamMembers() {
                 inquirerIntern();
                 break;
             case "Done":
-                renderTeam();
+                render(team);
                 break;
         }
     })
@@ -133,12 +132,6 @@ function inquirerIntern() {
         });
 
 };
-
-function renderTeam() {
-    const html = [];
-    const htmlStart = `
-    `
-}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
