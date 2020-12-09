@@ -1,3 +1,4 @@
+const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -9,9 +10,35 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { doesNotMatch } = require("assert");
 
 let team = [];
 
+inquirerManager();
+
+function addTeamMembers() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to add more team members?",
+            choices: ["Engineer", "Intern", "Done"],
+            name: "addMoreMembers"
+        }
+    ])
+    .then(function(result) {
+        switch (result.addMoreMembers) {
+            case "Engineer":
+                inquirerEngineer();
+                break;
+            case "Intern":
+                inquirerIntern();
+                break;
+            case "Done":
+                renderTeam();
+                break;
+        }
+    })
+}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -44,7 +71,8 @@ function inquirerManager() {
         const officeNumber = data.officeNumber
         const person = new Manager(name, id, email, officeNumber)
         team.push(person)
-        addPerson();
+        console.log(team)
+        addTeamMembers();
     })
 }
 
@@ -66,11 +94,12 @@ function inquirerEngineer() {
 
         .then(function (data) {
             const name = data.name
-            const id = finalTeamArray.length + 1
+            const id = team.length + 1
             const email = data.email
             const github = data.github
             const teamMember = new Engineer(name, id, email, github)
-            finalTeamArray.push(teamMember)
+            team.push(teamMember)
+            console.log(team)
             addTeamMembers()
         });
 
@@ -94,15 +123,22 @@ function inquirerIntern() {
 
         .then(function (data) {
             const name = data.name
-            const id = finalTeamArray.length + 1
+            const id = team.length + 1
             const email = data.email
             const school = data.school
             const teamMember = new Intern(name, id, email, school)
-            finalTeamArray.push(teamMember)
+            team.push(teamMember)
+            console.log(team)
             addTeamMembers()
         });
 
 };
+
+function renderTeam() {
+    const html = [];
+    const htmlStart = `
+    `
+}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
